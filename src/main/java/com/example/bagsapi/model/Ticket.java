@@ -1,5 +1,8 @@
 package com.example.bagsapi.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -7,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+@Getter
+@Setter
 @Entity
 public class Ticket extends BaseEntity{
 

@@ -11,7 +11,9 @@ import com.example.bagsapi.model.User;
 import com.example.bagsapi.repository.BagRepository;
 import com.example.bagsapi.repository.TicketRepository;
 import com.example.bagsapi.repository.UserRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BootstrapData implements CommandLineRunner{
 
 	
@@ -38,22 +40,26 @@ public class BootstrapData implements CommandLineRunner{
 		User user3 = new User("Josh", "Peck","JoshPeck@Gmail.com");
 		
 		List.of(user1, user2, user3).forEach(user -> userRepository.save(user));
+
+		System.out.println(userRepository.findById(1L).get().getEmail());
+
 		
 		Bag bag1 = new Bag(30,35,BagStatus.CHECKED_IN);
 		Bag bag2 = new Bag(22,45,BagStatus.CHECKED_IN);
 		Bag bag3 = new Bag(36,25,BagStatus.CHECKED_IN);
 		Bag bag4 = new Bag(43,15,BagStatus.NOT_CHECKED_IN);
-		
-		List.of(bag1, bag2, bag3, bag4).forEach(bag -> bagRepository.save(bag));
+		Bag bag5 = new Bag(33,15,BagStatus.NOT_CHECKED_IN);
+
+
+		List.of(bag1, bag2, bag3, bag4, bag5).forEach(bag -> bagRepository.save(bag));
 		
 		
 		Ticket ticket1 = new Ticket(user1, List.of(bag1), "ATL", "MIA"); 
 		Ticket ticket2 = new Ticket(user2, List.of(bag2, bag3), "NYC", "MON");
 		Ticket ticket3 = new Ticket(user3, List.of(bag4), "ATL", "LAX");
+		Ticket ticket4 = new Ticket(user1, List.of(bag5), "MIA", "CHA");
 		
-		List.of(ticket1, ticket2, ticket3).forEach(ticket -> ticketRepository.save(ticket));
-		
-		
+		List.of(ticket1, ticket2, ticket3, ticket4).forEach(ticket -> ticketRepository.save(ticket));
 	}
 	
 	

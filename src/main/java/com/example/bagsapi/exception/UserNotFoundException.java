@@ -1,10 +1,14 @@
 package com.example.bagsapi.exception;
 
+
+import lombok.Data;
+
+@Data
 public class UserNotFoundException extends RuntimeException{
 
-	public UserNotFoundException(String string) {
-		// TODO Auto-generated constructor stub
+	String id;
+
+	public UserNotFoundException(String id) {
+		this.id = id;
 	}
-
-
 }

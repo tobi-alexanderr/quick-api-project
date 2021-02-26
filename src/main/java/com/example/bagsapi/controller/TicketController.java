@@ -2,6 +2,7 @@ package com.example.bagsapi.controller;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,14 +18,10 @@ import com.example.bagsapi.services.TicketService;
 
 @RestController
 @RequestMapping("/api/v1/ticket")
+@AllArgsConstructor
 public class TicketController {
 
 	private final TicketService ticketService;
-
-	public TicketController(TicketService ticketService) {
-		super();
-		this.ticketService = ticketService;
-	} 
 	
 	
 	@PostMapping

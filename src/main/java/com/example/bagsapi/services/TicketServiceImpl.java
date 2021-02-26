@@ -2,6 +2,7 @@ package com.example.bagsapi.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,9 @@ public class TicketServiceImpl implements TicketService{
 	private final UserRepository userRepository; 
 	
 	
-	public TicketServiceImpl(TicketRepository ticketRepositiory, UserRepository userRepository) {
+	public TicketServiceImpl(TicketRepository ticketRepository, UserRepository userRepository) {
 		super();
-		this.ticketRepository = ticketRepositiory;
+		this.ticketRepository = ticketRepository;
 		this.userRepository = userRepository;
 	}
 
@@ -30,10 +31,16 @@ public class TicketServiceImpl implements TicketService{
 	public List<Ticket> getTicketsByUserId(Long id) {
 		
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException(id.toString())); 
+				.orElseThrow(() -> new UserNotFoundException(id.toString()));
+
 		
 		List<Ticket> tickets = ticketRepository.findAllByUserId(user.getId());
-		return tickets; 
+
+		//If ticket is marked as deleted remove it.
+		return tickets.stream()
+				.filter(ticket -> !ticket.isDeleted())
+				.collect(Collectors.toList());
+
 	}
 
 	@Override
@@ -43,8 +50,13 @@ public class TicketServiceImpl implements TicketService{
 
 	@Override
 	public Ticket getTicketById(Long id) {
-		return ticketRepository.findById(id)
+		Ticket ticket = ticketRepository.findById(id)
 				.orElseThrow(() -> new TicketNotFoundException(id.toString()));
+
+		if(ticket.isDeleted())
+			throw new TicketNotFoundException(id.toString());
+
+		return ticket;
 	}
 
 	@Override

@@ -1,30 +1,20 @@
 package com.example.bagsapi.controller;
 
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.bagsapi.model.Bag;
 import com.example.bagsapi.services.BagService;
 
-//import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/bag")
-//@AllArgsConstructor
+@AllArgsConstructor
 public class BagController {
 	
 	private final BagService bagService;
-
-	public BagController(BagService bagService) {
-		super();
-		this.bagService = bagService;
-	}
 	
 	@PostMapping
 	public ResponseEntity<?> addBag(@RequestBody Bag bag){
@@ -33,13 +23,13 @@ public class BagController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getBagById(@RequestParam Long id){
-		bagService.findBagById(id);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Bag> getBagById(@PathVariable Long id){
+		Bag bag = bagService.findBagById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(bag);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteBagById(@RequestParam Long id){
+	public ResponseEntity<?> deleteBagById(@PathVariable Long id){
 		bagService.deleteBag(id);
 		return ResponseEntity.ok().build();
 	}
